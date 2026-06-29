@@ -1,15 +1,15 @@
 <div id="contact-wrapper">
   <legend id="form-header">Contact Me</legend>
-  <form #requestForm="ngForm" (ngSubmit)="submitContact()">
+  <form #contactForm="ngForm" (ngSubmit)="submitContact()">
     <label for="email" class="hidden-label">Email</label>
-    <input type="text" id="email" name="email" [(ngModel)]="request.email" placeholder="Email" maxlength="50" required [pattern]="emailRegex" #email="ngModel">
+    <input type="text" id="email" name="email" [(ngModel)]="contact.email" placeholder="Email" maxlength="50" required [pattern]="emailRegex" #email="ngModel">
     <p class="field-error" [class.visible]="email.touched && email.errors">{{ email.touched && email.errors?.['required'] ? 'Email is required.' : email.errors?.['pattern'] ? 'Please enter a valid email address.' : '' }}</p>
     <br>
     <label for="phone" class="hidden-label">Phone</label>
-    <input type="text" id="phone" name="phone" [(ngModel)]="request.phone" placeholder="###-###-###" maxlength="16" required [pattern]="phoneRegex" #phone="ngModel">
+    <input type="text" id="phone" name="phone" [(ngModel)]="contact.phone" placeholder="###-###-###" maxlength="16" required [pattern]="phoneRegex" #phone="ngModel">
     <p class="field-error" [class.visible]="phone.touched && phone.errors">{{ phone.touched && phone.errors?.['required'] ? 'Phone is required.' : phone.errors?.['pattern'] ? 'Please enter a valid 10-digit phone number.' : '' }}</p>
     <label for="question">Have any questions?</label>
-    <input type="text" id="question" name="question" [(ngModel)]="request.question" placeholder="Tell us which questions interest you..." maxlength="200" #question="ngModel">
-    <button type="submit" id="submit-request-button" [disabled]="requestForm.invalid">Request Info</button>
+    <input type="text" id="question" name="question" [(ngModel)]="contact.question" placeholder="Tell us which questions interest you..." maxlength="200" #question="ngModel">
+    <button type="submit" id="submit-contact-button" [disabled]="contactForm.invalid">Submit</button>
   </form>
 </div>
