@@ -5,7 +5,7 @@ import { ContactApi } from '../services/contact-api';
 
 @Component({
   selector: 'app-contact-form',
-  imports: [Router],
+  imports: [],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css',
 })
