@@ -4,20 +4,22 @@ import { Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contact } from '../models/contact';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContactApi {
   private http = inject(HttpClient);
   private apiUrl = 'https://portfolio-server-2huucdh3f-lcrowe42s-projects.vercel.app/';
-  submitRequest(contact: Contact): Observable<{ message: string; contactId: string }> {
+  submitContact(contact: Contact): Observable<{ message: string; contactId: string }> {
     return this.http.post<{ message: string; contactId: string }>(this.apiUrl, contact);
   }
-  getRequests(): Observable<Request[]> {
-    return this.http.get<Request[]>(this.apiUrl);
+  getContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(this.apiUrl);
   }
-  getRequestById(id: string): Observable<Request> {
-    return this.http.get<Request>(`${this.apiUrl}/${id}`);
+  getContactById(id: string): Observable<Contact> {
+    return this.http.get<Contact>(`${this.apiUrl}/${id}`);
   }
-  deleteRequest(id: string): Observable<any> {
+  deleteContact(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
   markComplete(id: string): Observable<any> {
