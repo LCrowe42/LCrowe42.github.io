@@ -8,7 +8,7 @@ import { Contact } from '../models/contact';
 })
 export class ContactApi {
   private http = inject(HttpClient);
-  private apiUrl = 'https://portfolio-server-2huucdh3f-lcrowe42s-projects.vercel.app/contacts';
+  private apiUrl = 'https://portfolio-server-mauve-five.vercel.app/contacts';
   submitContact(contact: Contact): Observable<{ message: string; contactId: string }> {
     return this.http.post<{ message: string; contactId: string }>(this.apiUrl, contact);
   }
