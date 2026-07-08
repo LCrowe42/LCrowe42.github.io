@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contact } from '../models/contact';
 
@@ -9,7 +8,7 @@ import { Contact } from '../models/contact';
 })
 export class ContactApi {
   private http = inject(HttpClient);
-  private apiUrl = 'https://portfolio-server-2huucdh3f-lcrowe42s-projects.vercel.app/';
+  private apiUrl = 'https://portfolio-server-2huucdh3f-lcrowe42s-projects.vercel.app/contact';
   submitContact(contact: Contact): Observable<{ message: string; contactId: string }> {
     return this.http.post<{ message: string; contactId: string }>(this.apiUrl, contact);
   }
