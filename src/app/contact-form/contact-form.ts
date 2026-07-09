@@ -19,8 +19,8 @@ export class ContactForm {
   constructor(private contactApi: ContactApi, private router: Router) {}
   errorMessage = '';
   requestSubmitted = false;
-  emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
-  phoneRegex = '^\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$';
+  emailRegex = '^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$';
+  phoneRegex = '^\\(?\\d{3}\\)?[\\-. ]?\\d{3}[\\-. ]?\\d{4}$';
   submitContact() {
     this.errorMessage = '';
     this.contactApi.submitContact(this.contact).subscribe({
