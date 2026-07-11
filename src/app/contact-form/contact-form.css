@@ -1,19 +1,11 @@
-:root {
-  --color-1: #222222;
-  --color-2: #fd5825;
-  --color-3: #f7efe5;
-  --color-4: #3fabaf;
-}
 #contact-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  height: 500px;
 }
 #contact-left {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   flex-direction: column;
 }
 form {
@@ -48,6 +40,8 @@ input {
   text-align: center;
   font-weight: 800;
   padding-bottom: 10px;
+  position: relative;
+  left: 50%;
 }
 #form-description {
   font-size: 14px;
@@ -60,6 +54,7 @@ input {
   color: var(--color-3);
   text-align: center;
   width: 200px;
+  margin-left: 50px;
 }
 .field-error {
   visibility: hidden;
