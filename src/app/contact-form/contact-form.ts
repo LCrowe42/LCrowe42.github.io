@@ -26,7 +26,7 @@ export class ContactForm {
     this.contactApi.submitContact(this.contact).subscribe({
       next: () => {
         this.requestSubmitted = true;
-        //this.router.navigate(['/confirmation']);
+        this.router.navigate(['/confirmation']);
       },
       error: () => {
         this.errorMessage = 'The contact could not be submitted.';
