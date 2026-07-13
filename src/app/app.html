@@ -7,8 +7,11 @@
   </button>
   <nav [class.open]="menuOpen">
     <a routerLink="/" (click)="closeMenu()">Home</a>
+    <div class="divider-line"></div>
     <a routerLink="/about" (click)="closeMenu()">About</a>
+    <div class="divider-line"></div>
     <a routerLink="/projects" (click)="closeMenu()">Projects</a>
+    <div class="divider-line"></div>
     <a routerLink="/contact" (click)="closeMenu()">Contact</a>
   </nav>
 </header>

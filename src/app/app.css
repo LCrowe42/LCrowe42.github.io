@@ -26,6 +26,13 @@ a {
   color: var(--color-3);
   text-decoration: none;
 }
+.divider-line {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-3);
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 .hamburger {
   display: none;
@@ -69,6 +76,10 @@ a {
 
   .hamburger {
     display: flex;
+  }
+
+  .divider-line {
+    display: none;
   }
 
   nav {

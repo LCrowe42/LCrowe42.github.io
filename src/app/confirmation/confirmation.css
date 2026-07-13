@@ -1,0 +1,10 @@
+#confirmation-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+a {
+  color: var(--color-2);
+  text-decoration: none;
+}
