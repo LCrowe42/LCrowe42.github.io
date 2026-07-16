@@ -9,8 +9,8 @@
       </div>
       <div class="input-wrapper">
         <label for="phone" class="hidden-label">Phone</label>
-        <input type="text" id="phone" name="phone" [(ngModel)]="contact.phone" placeholder="###-###-###" maxlength="16" required [pattern]="phoneRegex" #phone="ngModel">
-        <p class="field-error" [class.visible]="phone.touched && phone.errors">{{ phone.touched && phone.errors?.['required'] ? 'Phone is required.' : phone.errors?.['pattern'] ? 'Please enter a valid 10-digit phone number.' : '' }}</p>
+        <input type="text" id="phone" name="phone" [(ngModel)]="contact.phone" placeholder="###-###-###" maxlength="16" [pattern]="phoneRegex" #phone="ngModel">
+        <p class="field-error" [class.visible]="phone.touched && phone.errors">{{ phone.touched && phone.errors?.['pattern'] ? 'Please enter a valid 10-digit phone number.' : '' }}</p>
       </div>
       <div class="question-wrapper">
         <label for="question" class="hidden-label">Questions</label>
