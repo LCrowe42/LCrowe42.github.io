@@ -15,6 +15,10 @@
   letter-spacing: 2px;
 }
 
+a {
+  text-decoration: none;
+}
+
 #projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
