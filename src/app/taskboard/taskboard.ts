@@ -15,7 +15,7 @@ export class Taskboard implements OnInit {
   errorMessage = '';
   showForm = false;
 
-  members = ['Person 1', 'Person 2', 'Person 3']; // replace with household names
+  members = ['Lucas', 'Nap', 'Lockelan', 'Lisa', 'Julia', 'Devan', 'Mike', 'Justine', 'Logan'];
 
   newTask: Task = {
     title: '',
@@ -33,21 +33,64 @@ export class Taskboard implements OnInit {
     this.loadTasks();
   }
 
+  sortBy: string = 'priority';
+sortDirection: 'asc' | 'desc' = 'desc';
+
+setSort(field: string) {
+  if (this.sortBy === field) {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    this.sortBy = field;
+    this.sortDirection = field === 'priority' ? 'desc' : 'asc';
+  }
+}
+
+sortTasks(tasks: Task[]): Task[] {
+  return [...tasks].sort((a, b) => {
+    let valA: any;
+    let valB: any;
+
+    switch (this.sortBy) {
+      case 'priority':
+        valA = a.priority;
+        valB = b.priority;
+        break;
+      case 'deadline':
+        valA = new Date(a.deadline).getTime();
+        valB = new Date(b.deadline).getTime();
+        break;
+      case 'creator':
+        valA = a.creator.toLowerCase();
+        valB = b.creator.toLowerCase();
+        break;
+      case 'assignee':
+        valA = a.assignee.toLowerCase();
+        valB = b.assignee.toLowerCase();
+        break;
+      default:
+        return 0;
+    }
+
+    if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+get todoTasks() {
+  return this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
+}
+
+get inProgressTasks() {
+  return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
+}
+
   loadTasks() {
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => this.tasks = tasks,
       error: () => this.errorMessage = 'Failed to load tasks.'
     });
   }
-
-  get todoTasks() {
-    return this.tasks.filter(t => t.status === 'todo');
-  }
-
-  get inProgressTasks() {
-    return this.tasks.filter(t => t.status === 'inprogress');
-  }
-
   markInProgress(task: Task) {
     this.taskboardApi.updateStatus(task._id!, 'inprogress').subscribe({
       next: () => task.status = 'inprogress',
@@ -91,4 +134,8 @@ export class Taskboard implements OnInit {
     if (priority >= 5) return '#3fabaf';
     return '#888';
   }
+
+
 }
+
+

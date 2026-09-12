@@ -7,6 +7,22 @@
     </button>
   </div>
 
+  <div id="sort-controls">
+    <span id="sort-label">Sort by:</span>
+    <button class="sort-btn" [class.active]="sortBy === 'priority'" (click)="setSort('priority')">
+      Priority {{ sortBy === 'priority' ? (sortDirection === 'desc' ? '↓' : '↑') : '' }}
+    </button>
+    <button class="sort-btn" [class.active]="sortBy === 'deadline'" (click)="setSort('deadline')">
+      Due Date {{ sortBy === 'deadline' ? (sortDirection === 'asc' ? '↑' : '↓') : '' }}
+    </button>
+    <button class="sort-btn" [class.active]="sortBy === 'creator'" (click)="setSort('creator')">
+      Creator {{ sortBy === 'creator' ? (sortDirection === 'asc' ? '↑' : '↓') : '' }}
+    </button>
+    <button class="sort-btn" [class.active]="sortBy === 'assignee'" (click)="setSort('assignee')">
+      Assignee {{ sortBy === 'assignee' ? (sortDirection === 'asc' ? '↑' : '↓') : '' }}
+    </button>
+  </div>
+
   <p class="board-error" [class.visible]="errorMessage">{{ errorMessage }}</p>
 
   <div id="task-form-wrapper" [class.visible]="showForm">
