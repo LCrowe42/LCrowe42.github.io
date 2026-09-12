@@ -1,0 +1,126 @@
+<div id="taskboard-wrapper">
+
+  <div id="taskboard-header-row">
+    <p id="taskboard-title">Task Board</p>
+    <button class="glow-on-hover" (click)="toggleForm()">
+      {{ showForm ? 'Cancel' : '+ New Task' }}
+    </button>
+  </div>
+
+  <p class="board-error" [class.visible]="errorMessage">{{ errorMessage }}</p>
+
+  <div id="task-form-wrapper" [class.visible]="showForm">
+    <form #taskForm="ngForm" (ngSubmit)="submitTask()">
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" name="title" [(ngModel)]="newTask.title"
+            placeholder="Task title" required maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" name="description" [(ngModel)]="newTask.description"
+            placeholder="Optional description" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label>Creator</label>
+          <select name="creator" [(ngModel)]="newTask.creator" required>
+            <option value="" disabled selected>Select creator</option>
+            <option *ngFor="let m of members" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Assignee</label>
+          <select name="assignee" [(ngModel)]="newTask.assignee" required>
+            <option value="" disabled selected>Select assignee</option>
+            <option *ngFor="let m of members" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Priority (1–10)</label>
+          <input type="number" name="priority" [(ngModel)]="newTask.priority"
+            min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Deadline</label>
+          <input type="date" name="deadline" [(ngModel)]="newTask.deadline" required>
+        </div>
+
+      </div>
+      <button type="submit" class="glow-on-hover submit-task-btn"
+        [disabled]="taskForm.invalid">
+        Create Task
+      </button>
+    </form>
+  </div>
+
+  <div id="board-columns">
+
+    <div class="board-column">
+      <div class="column-header">
+        <p class="column-title">To Do</p>
+        <span class="column-count">{{ todoTasks.length }}</span>
+      </div>
+      <div class="task-list">
+        <div class="task-card" *ngFor="let task of todoTasks">
+          <div class="task-card-top">
+            <p class="task-title">{{ task.title }}</p>
+            <span class="priority-badge" [style.border-color]="priorityColor(task.priority)"
+              [style.color]="priorityColor(task.priority)">
+              P{{ task.priority }}
+            </span>
+          </div>
+          <p class="task-description" *ngIf="task.description">{{ task.description }}</p>
+          <div class="task-meta">
+            <span>From: {{ task.creator }}</span>
+            <span>For: {{ task.assignee }}</span>
+            <span>Due: {{ task.deadline | date:'mediumDate' }}</span>
+          </div>
+          <div class="task-actions">
+            <button class="action-btn inprogress-btn" (click)="markInProgress(task)">
+              Start
+            </button>
+          </div>
+        </div>
+        <p class="empty-column" *ngIf="todoTasks.length === 0">No tasks yet.</p>
+      </div>
+    </div>
+
+    <div class="board-column">
+      <div class="column-header">
+        <p class="column-title">In Progress</p>
+        <span class="column-count">{{ inProgressTasks.length }}</span>
+      </div>
+      <div class="task-list">
+        <div class="task-card" *ngFor="let task of inProgressTasks">
+          <div class="task-card-top">
+            <p class="task-title">{{ task.title }}</p>
+            <span class="priority-badge" [style.border-color]="priorityColor(task.priority)"
+              [style.color]="priorityColor(task.priority)">
+              P{{ task.priority }}
+            </span>
+          </div>
+          <p class="task-description" *ngIf="task.description">{{ task.description }}</p>
+          <div class="task-meta">
+            <span>From: {{ task.creator }}</span>
+            <span>For: {{ task.assignee }}</span>
+            <span>Due: {{ task.deadline | date:'mediumDate' }}</span>
+          </div>
+          <div class="task-actions">
+            <button class="action-btn complete-btn" (click)="markComplete(task)">
+              Complete
+            </button>
+          </div>
+        </div>
+        <p class="empty-column" *ngIf="inProgressTasks.length === 0">Nothing in progress.</p>
+      </div>
+    </div>
+
+  </div>
+</div>

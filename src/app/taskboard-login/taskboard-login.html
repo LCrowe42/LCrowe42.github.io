@@ -1,0 +1,20 @@
+<div id="login-wrapper">
+  <div id="login-card">
+    <p id="login-header">Task Board</p>
+    <p id="login-sub">Enter the password to continue</p>
+    <form #loginForm="ngForm" (ngSubmit)="submit()">
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+        required
+        id="login-input"
+      />
+      <p class="login-error" [class.visible]="errorMessage">{{ errorMessage }}</p>
+      <button type="submit" class="glow-on-hover" [disabled]="loading || !password">
+        {{ loading ? 'Checking...' : 'Enter' }}
+      </button>
+    </form>
+  </div>
+</div>
