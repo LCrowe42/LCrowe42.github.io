@@ -271,6 +271,38 @@
   color: var(--color-2);
 }
 
+#edit-form-wrapper {
+  width: 100%;
+  background-color: #2e2e2e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: none;
+  border-left: 3px solid var(--color-4);
+}
+
+#edit-form-wrapper.visible {
+  display: block;
+}
+
+#edit-form-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-4);
+  margin: 0 0 1rem 0;
+}
+
+.edit-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.edit-btn {
+  background-color: #444;
+  color: var(--color-3);
+}
+
 @media (max-width: 768px) {
   #board-columns {
     grid-template-columns: 1fr;

@@ -65,7 +65,7 @@
 
         <div class="form-group">
           <label>Deadline</label>
-          <input type="date" name="deadline" [(ngModel)]="newTask.deadline" required>
+          <input type="date" name="deadline" [(ngModel)]="newTask.deadline">
         </div>
 
       </div>
@@ -73,6 +73,63 @@
         [disabled]="taskForm.invalid">
         Create Task
       </button>
+    </form>
+  </div>
+
+  <div id="edit-form-wrapper" [class.visible]="editingTask">
+    <p id="edit-form-title">Edit Task</p>
+    <form #editForm="ngForm" (ngSubmit)="saveEdit()">
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" name="edit-title" [(ngModel)]="editingTask!.title"
+            placeholder="Task title" required maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" name="edit-description" [(ngModel)]="editingTask!.description"
+            placeholder="Optional description" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label>Creator</label>
+          <select name="edit-creator" [(ngModel)]="editingTask!.creator" required>
+            <option value="" disabled>Select creator</option>
+            <option *ngFor="let m of members" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Assignee</label>
+          <select name="edit-assignee" [(ngModel)]="editingTask!.assignee" required>
+            <option value="" disabled>Select assignee</option>
+            <option *ngFor="let m of members" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Priority (1–10)</label>
+          <input type="number" name="edit-priority" [(ngModel)]="editingTask!.priority"
+            min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Deadline</label>
+          <input type="date" name="edit-deadline" [(ngModel)]="editingTask!.deadline"
+            required>
+        </div>
+
+      </div>
+      <div class="edit-form-actions">
+        <button type="submit" class="action-btn complete-btn" [disabled]="editForm.invalid">
+          Save
+        </button>
+        <button type="button" class="action-btn" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
     </form>
   </div>
 
@@ -99,6 +156,12 @@
             <span>Due: {{ task.deadline | date:'mediumDate' }}</span>
           </div>
           <div class="task-actions">
+            <button class="action-btn delete-btn" (click)="deleteTask(task)">
+              Delete
+            </button>
+            <button class="action-btn edit-btn" (click)="editTask(task)">
+              Edit
+            </button>
             <button class="action-btn inprogress-btn" (click)="markInProgress(task)">
               Start
             </button>

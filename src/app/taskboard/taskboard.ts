@@ -15,7 +15,7 @@ export class Taskboard implements OnInit {
   errorMessage = '';
   showForm = false;
 
-  members = ['Lucas', 'Nap', 'Lockelan', 'Lisa', 'Julia', 'Devan', 'Mike', 'Justine', 'Logan'];
+  members = ['Lucas', 'Nap', 'Lockelan', 'Lisa', 'Julia', 'Devan', 'Mike', 'Justine', 'Logan', 'Anyone'];
 
   newTask: Task = {
     title: '',
@@ -23,7 +23,7 @@ export class Taskboard implements OnInit {
     creator: '',
     assignee: '',
     priority: 5,
-    deadline: '',
+    deadline: '2050-12-31',
     status: 'todo'
   };
 
@@ -34,56 +34,56 @@ export class Taskboard implements OnInit {
   }
 
   sortBy: string = 'priority';
-sortDirection: 'asc' | 'desc' = 'desc';
+  sortDirection: 'asc' | 'desc' = 'desc';
 
-setSort(field: string) {
-  if (this.sortBy === field) {
-    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-  } else {
-    this.sortBy = field;
-    this.sortDirection = field === 'priority' ? 'desc' : 'asc';
-  }
-}
-
-sortTasks(tasks: Task[]): Task[] {
-  return [...tasks].sort((a, b) => {
-    let valA: any;
-    let valB: any;
-
-    switch (this.sortBy) {
-      case 'priority':
-        valA = a.priority;
-        valB = b.priority;
-        break;
-      case 'deadline':
-        valA = new Date(a.deadline).getTime();
-        valB = new Date(b.deadline).getTime();
-        break;
-      case 'creator':
-        valA = a.creator.toLowerCase();
-        valB = b.creator.toLowerCase();
-        break;
-      case 'assignee':
-        valA = a.assignee.toLowerCase();
-        valB = b.assignee.toLowerCase();
-        break;
-      default:
-        return 0;
+  setSort(field: string) {
+    if (this.sortBy === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortDirection = field === 'priority' ? 'desc' : 'asc';
     }
+  }
 
-    if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-    if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
-}
+  sortTasks(tasks: Task[]): Task[] {
+    return [...tasks].sort((a, b) => {
+      let valA: any;
+      let valB: any;
 
-get todoTasks() {
-  return this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
-}
+      switch (this.sortBy) {
+        case 'priority':
+          valA = a.priority;
+          valB = b.priority;
+          break;
+        case 'deadline':
+          valA = new Date(a.deadline).getTime() || 0;
+          valB = new Date(b.deadline).getTime() || 0;
+          break;
+        case 'creator':
+          valA = a.creator.toLowerCase();
+          valB = b.creator.toLowerCase();
+          break;
+        case 'assignee':
+          valA = a.assignee.toLowerCase();
+          valB = b.assignee.toLowerCase();
+          break;
+        default:
+          return 0;
+      }
 
-get inProgressTasks() {
-  return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
-}
+      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  get todoTasks() {
+    return this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
+  }
+
+  get inProgressTasks() {
+    return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
+  }
 
   loadTasks() {
     this.taskboardApi.getTasks().subscribe({
@@ -116,11 +116,37 @@ get inProgressTasks() {
           creator: '',
           assignee: '',
           priority: 5,
-          deadline: '',
+          deadline: '2050-12-31',
           status: 'todo'
         };
       },
       error: () => this.errorMessage = 'Failed to create task.'
+    });
+  }
+
+  editingTask: Task | null = null;
+
+  editTask(task: Task) {
+    this.editingTask = { ...task,
+    deadline: new Date(task.deadline).toISOString().split('T')[0]
+    };
+    this.showForm = false;
+  }
+
+  cancelEdit() {
+    this.editingTask = null;
+  }
+
+  saveEdit() {
+    if (!this.editingTask) return;
+    this.taskboardApi.updateTask(this.editingTask).subscribe({
+      next: () => {
+        this.tasks = this.tasks.map(t =>
+          t._id === this.editingTask!._id ? { ...this.editingTask! } : t
+        );
+        this.editingTask = null;
+      },
+      error: () => this.errorMessage = 'Failed to update task.'
     });
   }
 

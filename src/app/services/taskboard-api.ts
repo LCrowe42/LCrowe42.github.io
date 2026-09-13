@@ -38,4 +38,8 @@ export class TaskboardApi {
   deleteTask(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/tasks/${id}`);
   }
+
+  updateTask(task: Task): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.baseUrl}/tasks/${task._id}`, task);
+  }
 }
