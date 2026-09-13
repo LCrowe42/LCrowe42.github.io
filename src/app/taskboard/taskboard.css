@@ -277,12 +277,7 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-sizing: border-box;
-  display: none;
   border-left: 3px solid var(--color-4);
-}
-
-#edit-form-wrapper.visible {
-  display: block;
 }
 
 #edit-form-title {

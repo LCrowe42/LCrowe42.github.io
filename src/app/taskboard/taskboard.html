@@ -76,26 +76,26 @@
     </form>
   </div>
 
-  <div id="edit-form-wrapper" [class.visible]="editingTask">
+  <div id="edit-form-wrapper" *ngIf="editingTask">
     <p id="edit-form-title">Edit Task</p>
     <form #editForm="ngForm" (ngSubmit)="saveEdit()">
       <div class="form-grid">
 
         <div class="form-group">
           <label>Title</label>
-          <input type="text" name="edit-title" [(ngModel)]="editingTask!.title"
+          <input type="text" name="edit-title" [(ngModel)]="editingTask.title"
             placeholder="Task title" required maxlength="100">
         </div>
 
         <div class="form-group">
           <label>Description</label>
-          <input type="text" name="edit-description" [(ngModel)]="editingTask!.description"
+          <input type="text" name="edit-description" [(ngModel)]="editingTask.description"
             placeholder="Optional description" maxlength="200">
         </div>
 
         <div class="form-group">
           <label>Creator</label>
-          <select name="edit-creator" [(ngModel)]="editingTask!.creator" required>
+          <select name="edit-creator" [(ngModel)]="editingTask.creator" required>
             <option value="" disabled>Select creator</option>
             <option *ngFor="let m of members" [value]="m">{{ m }}</option>
           </select>
@@ -103,7 +103,7 @@
 
         <div class="form-group">
           <label>Assignee</label>
-          <select name="edit-assignee" [(ngModel)]="editingTask!.assignee" required>
+          <select name="edit-assignee" [(ngModel)]="editingTask.assignee" required>
             <option value="" disabled>Select assignee</option>
             <option *ngFor="let m of members" [value]="m">{{ m }}</option>
           </select>
@@ -111,14 +111,13 @@
 
         <div class="form-group">
           <label>Priority (1–10)</label>
-          <input type="number" name="edit-priority" [(ngModel)]="editingTask!.priority"
+          <input type="number" name="edit-priority" [(ngModel)]="editingTask.priority"
             min="1" max="10" required>
         </div>
 
         <div class="form-group">
           <label>Deadline</label>
-          <input type="date" name="edit-deadline" [(ngModel)]="editingTask!.deadline"
-            required>
+          <input type="date" name="edit-deadline" [(ngModel)]="editingTask.deadline" required>
         </div>
 
       </div>
