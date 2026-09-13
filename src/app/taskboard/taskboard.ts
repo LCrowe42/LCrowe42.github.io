@@ -31,7 +31,6 @@ export class Taskboard implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
-    this.sortTasks(this.tasks);
   }
 
   sortBy: string = 'priority';
@@ -86,10 +85,17 @@ export class Taskboard implements OnInit {
     return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
   }
 
-  loadTasks() {
+  async loadTasks() {
+    await new Promise(resolve => setTimeout(resolve, 500));
     this.taskboardApi.getTasks().subscribe({
-      next: (tasks) => this.tasks = tasks,
-      error: () => this.errorMessage = 'Failed to load tasks.'
+      next: (tasks) => {
+        console.log('tasks loaded:', tasks);
+        this.tasks = tasks;
+      },
+      error: (err) => {
+        console.error('loadTasks error:', err);
+        this.errorMessage = 'Failed to load tasks.';
+      }
     });
   }
   markInProgress(task: Task) {
