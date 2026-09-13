@@ -88,10 +88,11 @@ export class Taskboard implements OnInit {
   loadTasks() {
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => {
+        console.log('tasks loaded:', tasks);
         this.tasks = tasks;
-        this.setSort('priority');
       },
       error: (err) => {
+        console.error('loadTasks error:', err);
         this.errorMessage = 'Failed to load tasks.';
       }
     });
