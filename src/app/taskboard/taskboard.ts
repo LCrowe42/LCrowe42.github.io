@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TaskboardApi, Task } from '../services/taskboard-api';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-taskboard',
@@ -11,6 +12,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './taskboard.css'
 })
 export class Taskboard implements OnInit {
+
   tasks: Task[] = [];
   errorMessage = '';
   showForm = false;
@@ -27,7 +29,7 @@ export class Taskboard implements OnInit {
     status: 'todo'
   };
 
-  constructor(private taskboardApi: TaskboardApi) {}
+  constructor(private taskboardApi: TaskboardApi, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadTasks();
@@ -88,12 +90,13 @@ export class Taskboard implements OnInit {
   loadTasks() {
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => {
-        console.log('tasks loaded:', tasks);
         this.tasks = tasks;
+        this.setSort('priority');
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('loadTasks error:', err);
         this.errorMessage = 'Failed to load tasks.';
+        this.cdr.detectChanges();
       }
     });
   }
