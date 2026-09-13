@@ -15,5 +15,7 @@ export const routes: Routes = [
   { path: 'about', component: About, title: 'About' },
   { path: 'confirmation', component: Confirmation, title: 'Confirmation' },
   { path: 'taskboard-login', component: TaskboardLogin },
-  { path: 'taskboard', component: Taskboard, canActivate: [taskboardGuard] }
+  { path: 'taskboard', component: Taskboard, canActivate: [taskboardGuard] },
+  { path: 'apps', component: Apps, title: 'Apps' },
+  { path: '**', redirectTo: '' }
 ];
