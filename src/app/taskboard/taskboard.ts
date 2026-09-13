@@ -29,11 +29,20 @@ export class Taskboard implements OnInit {
 
   constructor(private taskboardApi: TaskboardApi) {}
 
+  ngOnInit() {
+    this.loadTasks();
+  }
+
   sortBy: string = 'priority';
   sortDirection: 'asc' | 'desc' = 'desc';
 
-  ngOnInit() {
-    this.loadTasks();
+  setSort(field: string) {
+    if (this.sortBy === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortDirection = field === 'priority' ? 'desc' : 'asc';
+    }
   }
 
   sortTasks(tasks: Task[]): Task[] {
@@ -68,37 +77,25 @@ export class Taskboard implements OnInit {
     });
   }
 
-  todoTasks: Task[] = [];
-  inProgressTasks: Task[] = [];
+  get todoTasks() {
+    return this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
+  }
+
+  get inProgressTasks() {
+    return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
+  }
 
   loadTasks() {
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => {
         this.tasks = tasks;
-        this.updateFilteredTasks();
+        this.setSort('priority');
       },
       error: (err) => {
-        console.error('loadTasks error:', err);
         this.errorMessage = 'Failed to load tasks.';
       }
     });
   }
-
-  updateFilteredTasks() {
-    this.todoTasks = this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
-    this.inProgressTasks = this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
-  }
-
-  setSort(field: string) {
-    if (this.sortBy === field) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortBy = field;
-      this.sortDirection = field === 'priority' ? 'desc' : 'asc';
-    }
-    this.updateFilteredTasks();
-  }
-
   markInProgress(task: Task) {
     this.taskboardApi.updateStatus(task._id!, 'inprogress').subscribe({
       next: () => task.status = 'inprogress',
