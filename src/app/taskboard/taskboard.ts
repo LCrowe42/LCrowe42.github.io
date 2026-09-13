@@ -85,7 +85,8 @@ export class Taskboard implements OnInit {
     return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
   }
 
-  loadTasks() {
+  async loadTasks() {
+    await new Promise(resolve => setTimeout(resolve, 500));
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => this.tasks = tasks,
       error: () => this.errorMessage = 'Failed to load tasks.'
