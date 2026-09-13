@@ -85,18 +85,20 @@ export class Taskboard implements OnInit {
     return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
   }
 
-  async loadTasks() {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    this.taskboardApi.getTasks().subscribe({
-      next: (tasks) => {
-        console.log('tasks loaded:', tasks);
-        this.tasks = tasks;
-      },
-      error: (err) => {
-        console.error('loadTasks error:', err);
-        this.errorMessage = 'Failed to load tasks.';
+  async loadTasks(retries = 3, delay = 600) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const tasks = await this.taskboardApi.getTasks().toPromise();
+        this.tasks = tasks ?? [];
+        return;
+      } catch (err) {
+        if (i < retries - 1) {
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          this.errorMessage = 'Failed to load tasks.';
+        }
       }
-    });
+    }
   }
   markInProgress(task: Task) {
     this.taskboardApi.updateStatus(task._id!, 'inprogress').subscribe({
