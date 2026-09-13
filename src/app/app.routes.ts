@@ -7,6 +7,7 @@ import { Confirmation } from './confirmation/confirmation';
 import { taskboardGuard } from './guards/taskboard-guard';
 import { TaskboardLogin } from './taskboard-login/taskboard-login';
 import { Taskboard } from './taskboard/taskboard';
+import { Apps } from './apps/apps';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Place Request' },
