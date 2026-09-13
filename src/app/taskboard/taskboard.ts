@@ -91,7 +91,6 @@ export class Taskboard implements OnInit {
     this.taskboardApi.getTasks().subscribe({
       next: (tasks) => {
         this.tasks = tasks;
-        this.setSort('priority');
         this.cdr.detectChanges();
       },
       error: (err) => {
