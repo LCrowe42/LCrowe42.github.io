@@ -31,6 +31,7 @@ export class Taskboard implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
+    this.sortTasks(this.tasks);
   }
 
   sortBy: string = 'priority';
