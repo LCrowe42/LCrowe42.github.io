@@ -124,17 +124,18 @@ export class Taskboard implements OnInit {
     });
   }
 
-  editingTask: Task | null = null;
+  editingTask?: Task;
 
   editTask(task: Task) {
-    this.editingTask = { ...task,
-    deadline: new Date(task.deadline).toISOString().split('T')[0]
+    this.editingTask = {
+      ...task,
+      deadline: new Date(task.deadline).toISOString().split('T')[0]
     };
     this.showForm = false;
   }
 
   cancelEdit() {
-    this.editingTask = null;
+    this.editingTask = undefined;
   }
 
   saveEdit() {
@@ -144,7 +145,7 @@ export class Taskboard implements OnInit {
         this.tasks = this.tasks.map(t =>
           t._id === this.editingTask!._id ? { ...this.editingTask! } : t
         );
-        this.editingTask = null;
+        this.editingTask = undefined;
       },
       error: () => this.errorMessage = 'Failed to update task.'
     });

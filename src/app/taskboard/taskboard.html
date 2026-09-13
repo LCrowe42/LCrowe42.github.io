@@ -76,7 +76,7 @@
     </form>
   </div>
 
-  <div id="edit-form-wrapper" *ngIf="editingTask">
+  <div id="edit-form-wrapper" *ngIf="editingTask !== undefined">
     <p id="edit-form-title">Edit Task</p>
     <form #editForm="ngForm" (ngSubmit)="saveEdit()">
       <div class="form-grid">
