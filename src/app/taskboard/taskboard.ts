@@ -36,15 +36,6 @@ export class Taskboard implements OnInit {
     this.loadTasks();
   }
 
-  setSort(field: string) {
-    if (this.sortBy === field) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortBy = field;
-      this.sortDirection = field === 'priority' ? 'desc' : 'asc';
-    }
-  }
-
   sortTasks(tasks: Task[]): Task[] {
     return [...tasks].sort((a, b) => {
       let valA: any;
@@ -77,22 +68,37 @@ export class Taskboard implements OnInit {
     });
   }
 
-  get todoTasks() {
-    return this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
-  }
+  todoTasks: Task[] = [];
+  inProgressTasks: Task[] = [];
 
-  get inProgressTasks() {
-    return this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
-  }
-
-  async loadTasks() {
-    await new Promise(resolve => setTimeout(resolve, 500));
+  loadTasks() {
     this.taskboardApi.getTasks().subscribe({
-      next: (tasks) => this.tasks = tasks,
-      error: () => this.errorMessage = 'Failed to load tasks.'
+      next: (tasks) => {
+        this.tasks = tasks;
+        this.updateFilteredTasks();
+      },
+      error: (err) => {
+        console.error('loadTasks error:', err);
+        this.errorMessage = 'Failed to load tasks.';
+      }
     });
-    this.sortTasks(this.tasks);
   }
+
+  updateFilteredTasks() {
+    this.todoTasks = this.sortTasks(this.tasks.filter(t => t.status === 'todo'));
+    this.inProgressTasks = this.sortTasks(this.tasks.filter(t => t.status === 'inprogress'));
+  }
+
+  setSort(field: string) {
+    if (this.sortBy === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortDirection = field === 'priority' ? 'desc' : 'asc';
+    }
+    this.updateFilteredTasks();
+  }
+
   markInProgress(task: Task) {
     this.taskboardApi.updateStatus(task._id!, 'inprogress').subscribe({
       next: () => task.status = 'inprogress',
