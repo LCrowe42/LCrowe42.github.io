@@ -156,7 +156,7 @@
             <span>Due: {{ task.deadline | date:'mediumDate' }}</span>
           </div>
           <div class="task-actions">
-            <button class="action-btn delete-btn" (click)="deleteTask(task)">
+            <button class="action-btn delete-btn" (click)="markComplete(task)">
               Delete
             </button>
             <button class="action-btn edit-btn" (click)="editTask(task)">
